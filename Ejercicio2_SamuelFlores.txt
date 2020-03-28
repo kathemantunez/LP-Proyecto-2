@@ -1,0 +1,11 @@
+;Ejercicio #2
+(define lista (list 2 3 1 3 2 2 2 3 4 6 6 6 7 7))
+(define eliminar (lambda (L x) (if (null? L) '() (if (= (car L) x) (eliminar (cdr L) x) (cons (car L) (eliminar (cdr L) x))))))
+
+(define contar-repetidos (lambda(lista elemento cantidad) (if(null? (cdr lista)) (if(= elemento (car lista)) (+ cantidad 1) cantidad) (if(= elemento (car lista)) (contar-repetidos (cdr lista) elemento (+ cantidad 1))  (contar-repetidos (cdr lista) elemento cantidad)))))
+
+(define ejercicio-2(lambda(lista lista2) (if(null? lista) lista2 (ejercicio-2 (eliminar lista (car lista)) (append lista2 (list (cons (car lista) (contar-repetidos lista (car lista) 0))))))))
+;Prueba Ejercicio 2
+(define lista2 (list))
+(ejercicio-2 lista lista2)
+;Fin Prueba Ejercicio 2

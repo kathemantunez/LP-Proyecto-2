@@ -1,0 +1,123 @@
+;Ejercicio #3
+(define concatenar_ambas_listas (lambda (lis1 lis2)
+                        (if (and (null? lis1) (null? lis2))
+                          '()
+                          (if (not (null? lis1))
+                            (cons (car lis1) (concatenar_ambas_listas (cdr lis1) lis2))
+                          (if (not (null? lis2))
+                            (cons (car lis2) (concatenar_ambas_listas lis1 (cdr lis2)))
+                            '()
+                          )
+                          )
+                        )
+                      )
+)
+
+(define aplanar (lambda (lista)
+            (if (null? lista)
+              '()
+              (if (list? (car lista))
+                (concatenar_ambas_listas (aplanar (car lista)) (aplanar (cdr lista)))
+                (concatenar_ambas_listas (list (car lista)) (aplanar (cdr lista)))
+              )
+            )
+          )
+)
+;Prueba Ejercicio 3
+(define l4 '(6 (2 (1 () ()) (4 (3 () ()) (5 () ()))) (7 () (9 (8 () ()) ()))))
+(aplanar l4)
+;Fin Prueba Ejercicio 3
+
+;Ejercicio #5a
+(define (dato-arbol arbol)
+  (if(null? arbol)
+    '()
+    (car arbol))
+)
+
+;lista de hijos de un nodo del arbol
+(define (hijos-arbol arbol) 
+  (if(null? arbol)
+    '()
+    (cdr arbol)
+  )
+)
+
+;verifica si el nodo es hoja
+(define (hoja-arbol? arbol) 
+   (null? (hijos-arbol arbol)))
+
+(define (lista-tree tr)
+  (cons (dato-arbol tr) (lista-Sons (hijos-arbol tr)))
+)
+
+(define (hijo-izquierdo nodo)
+  (if (null? (hijos-arbol nodo))
+  '()
+  (car (hijos-arbol nodo))
+  )
+)
+
+(define (hijo-derecho nodo)
+  (if (null? (cdr (hijos-arbol nodo)))
+  '()
+  (car (cdr (hijos-arbol nodo)))
+  )
+)
+
+
+(define (lista-Sons tr)
+  (if (null? tr)
+  '()
+  (append (lista-tree (car tr))
+          (lista-Sons (cdr tr))))
+)
+
+(define (pre-order tr)
+  if(null? tr)
+    '()
+    (if(hoja-arbol? tr)    
+      (dato-arbol tr)
+      (aplanar (append (cons (pre-order (hijo-izquierdo tr)) '()) (cons (dato-arbol tr) '()) (cons (pre-order (hijo-derecho tr)) '() )))
+    )
+)
+
+(define (quicksort lst)
+  (cond
+    ((or (null? lst) 
+         (null? (cdr lst))) 
+     lst)
+    (else
+      (let ((pivot (car lst)) 
+            (rest (cdr lst)))
+        (append
+          (quicksort 
+            (filter (lambda (x) (< x pivot)) rest))
+          (list pivot) 
+          (quicksort
+            (filter (lambda (x) (>= x pivot)) rest))))))) 
+            
+
+
+(lista-tree '(3 (6 (14) (8)) (15 (12 (6)))))
+
+(define (Ordenar-Arbol arbol)
+    (quicksort (lista-tree '(3 (6 (14) (8)) (15 (12 (6))))))
+)
+;Prueba Ejercicio 5a
+;Ingeniero en ves de nil le puede poner ()
+;Nosotros hicimos el ordenamiento in-order pensando que ese era el ordenamiento que
+;deseaba pero igual nos sirvio para hacer el inciso b
+(define l3 '(6 (2 (1 () ()) (4 (3 () ()) (5 () ()))) (7 () (9 (8 () ()) ()))))
+;(pre-order '(F (B (A () ()) (D (C () ()) (E () ()))) (G () (I (H () ()) ()))))
+;(pre-order l3) 
+(quicksort(aplanar l3))
+;Fin Prueba Ejercicio 5a
+
+;Ejercicio #5b
+(define es-binario-de-busqueda(lambda(quick pre) (equal? (quicksort (aplanar quick)) (pre-order pre))))
+;Prueba Ejercicio 5b
+(define l1 '(6 (2 (1 () ()) (4 (3 () ()) (5 () ()))) (7 () (9 (8 () ()) ()))))
+(define l2 '(6 (2 (1 () ()) (4 (3 () ()) (5 () ()))) (7 () (9 (8 () ()) ()))))
+(es-binario-de-busqueda l1 l2)
+;Fin Prueba Ejercicio 5b
