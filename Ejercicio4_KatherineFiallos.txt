@@ -1,0 +1,53 @@
+;Ejercicio #4
+(define (elemento-polinomico x y l)
+  (if(>= y (- l 2))
+  (string-append (number->string x) "x" "^" (number->string y))
+  (es-negativo x y l)  
+  )
+)
+
+(define (es-ultimo x y l)
+  (if (> y 0)
+    (if (equal? y 1)
+      (string-append "+" (number->string x) "x")
+      (string-append "+" (number->string x) "x" "^" (number->string y))
+    )
+    (string-append "+" (number->string x))
+  )
+)
+
+(define (es-ultimo-negativo x y l)
+  (if (> y 0)
+    (if (equal? y 1)
+      (string-append (number->string x) "x")
+      (string-append (number->string x) "x" "^" (number->string y))
+    )
+    (string-append (number->string x))
+  )
+)
+
+(define (es-nulo x y l)
+  (if(equal? x 0)
+    ""
+    (elemento-polinomico x y l) 
+  )
+)
+
+
+
+(define (es-negativo x y l)
+  (if(> x 0)
+    (es-ultimo x y l)
+    (es-ultimo-negativo x y l)
+  )
+)
+
+(define (Crear-Fun lista cont)
+  (if(null? lista)
+  ""
+  (string-append (es-nulo (* (car lista) (- (length lista) 1)) (- (length lista) 2) (- (+ (length lista) cont) 1)) (Crear-Fun (cdr lista) (+ cont 1))) 
+  )
+)
+;Prueba Ejercicio #4
+(Crear-Fun '(3 0 2 5 10) 1)
+;Fin Ejercicio #4
