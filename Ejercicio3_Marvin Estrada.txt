@@ -1,0 +1,30 @@
+(define concatenar_listas (lambda (lista1 lista2)
+(if (and (null? lista1) (null? lista2))
+'()
+(if (not (null? lista1))
+(cons (car lista1) (concatenar_listas (cdr lista1) lista2))
+(if (not (null? lista2))
+(cons (car lista2) (concatenar_listas lista1 (cdr lista2)))
+'()
+);if
+);if
+);if
+);lambda
+);define
+
+;(concatenar_listas (list '0 '1 '2 '3) (list '4 '5 '6));=> (0 1 2 3 4 5 6 ) Probado con listas impropias.
+
+
+(define aplanar (lambda (lista)
+(if (null? lista)
+'()
+(if (list? (car lista))
+(concatenar_listas (aplanar (car lista)) (aplanar (cdr lista)))
+(concatenar_listas (list (car lista)) (aplanar (cdr lista)))
+);if
+);if
+);lambda
+);define
+
+(aplanar '( (1 2 3) (9 (2 3 4) ) ( ( ( ( 3 4 ( 7 ) ) ) ) ) ));=> (1 2 3 9 2 3 4 3 4 7)
+;(aplanar '( 1 2 3)) ;= >(1 2 3)
