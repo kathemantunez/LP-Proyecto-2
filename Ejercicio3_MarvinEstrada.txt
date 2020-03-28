@@ -1,30 +1,29 @@
-(define concatenar_listas (lambda (lista1 lista2)
-(if (and (null? lista1) (null? lista2))
-'()
-(if (not (null? lista1))
-(cons (car lista1) (concatenar_listas (cdr lista1) lista2))
-(if (not (null? lista2))
-(cons (car lista2) (concatenar_listas lista1 (cdr lista2)))
-'()
-);if
-);if
-);if
-);lambda
-);define
-
-;(concatenar_listas (list '0 '1 '2 '3) (list '4 '5 '6));=> (0 1 2 3 4 5 6 ) Probado con listas impropias.
-
+;Ejercicio #3
+(define concatenar_ambas_listas (lambda (lis1 lis2)
+                        (if (and (null? lis1) (null? lis2))
+                          '()
+                          (if (not (null? lis1))
+                            (cons (car lis1) (concatenar_ambas_listas (cdr lis1) lis2))
+                          (if (not (null? lis2))
+                            (cons (car lis2) (concatenar_ambas_listas lis1 (cdr lis2)))
+                            '()
+                          )
+                          )
+                        )
+                      )
+)
 
 (define aplanar (lambda (lista)
-(if (null? lista)
-'()
-(if (list? (car lista))
-(concatenar_listas (aplanar (car lista)) (aplanar (cdr lista)))
-(concatenar_listas (list (car lista)) (aplanar (cdr lista)))
-);if
-);if
-);lambda
-);define
-
-(aplanar '( (1 2 3) (9 (2 3 4) ) ( ( ( ( 3 4 ( 7 ) ) ) ) ) ));=> (1 2 3 9 2 3 4 3 4 7)
-;(aplanar '( 1 2 3)) ;= >(1 2 3)
+            (if (null? lista)
+              '()
+              (if (list? (car lista))
+                (concatenar_ambas_listas (aplanar (car lista)) (aplanar (cdr lista)))
+                (concatenar_ambas_listas (list (car lista)) (aplanar (cdr lista)))
+              )
+            )
+          )
+)
+;Prueba Ejercicio 3
+(define l4 '(6 (2 (1 () ()) (4 (3 () ()) (5 () ()))) (7 () (9 (8 () ()) ()))))
+(aplanar l4)
+;Fin Prueba Ejercicio 3
