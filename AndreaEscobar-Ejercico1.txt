@@ -1,0 +1,15 @@
+;Ejercicio #1
+(define mayor-lista(lambda(lista mayor) (if(null? (cdr lista)) (if(< (car lista) mayor) mayor (car lista)) (if(> (car lista) mayor) (mayor-lista (cdr lista) (car lista)) (mayor-lista (cdr lista) mayor)))))
+
+(define elimina (lambda (L x) (if (null? L) '() (if (= (car L) x) (cdr L) (cons (car L) (elimina (cdr L) x))))))
+
+(define suma-mayores(lambda(lista) (+ (mayor-lista lista 0) (mayor-lista (elimina lista (mayor-lista lista 0)) 0))))
+
+(define lista-valida(lambda(lista) (if(null? (cdr lista)) (if(number? (car lista)) #t #f) (if(number? (car lista)) (lista-valida (cdr lista)) #f))))
+
+(define ejercicio-1(lambda(lista) (if(lista-valida lista) (suma-mayores lista) (raise "Exception: La lista debe de ser numérica."))))
+;Prueba Ejercicio 1
+(define lista (list 7 2 3 4 5 6 5))
+;(define lista (list 7 2 3 4 5 6 5 "test"))
+(ejercicio-1 lista)
+;Fin Prueba Ejercicio 1
